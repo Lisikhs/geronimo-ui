@@ -26,7 +26,7 @@ export class AuthService {
 
   refreshToken(): Observable<Auth> {
     return this.http.get<Auth>(AuthService.TOKEN_REFRESH_URL)
-        .do(this.storeToken)
+        .do(this.storeToken);
   }
 
   private storeToken(auth: Auth): void {
