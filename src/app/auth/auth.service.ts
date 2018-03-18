@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Moment } from 'moment';
 import * as moment from 'moment';
 
 import { Observable } from 'rxjs/Observable';
@@ -11,6 +12,7 @@ export class AuthService {
   // TODO: inject values from global configuration (How Angular 2 proposes to do such things?)
   private static readonly TOKEN_KEY = 'token';
   private static readonly EXPIRES_AT_KEY = 'token_expires_at';
+
   private static readonly API_URL = 'http://localhost:8081';
   private static readonly AUTH_URL = `${AuthService.API_URL}/auth`;
   private static readonly TOKEN_REFRESH_URL = `${AuthService.API_URL}/auth/refresh`;
@@ -27,25 +29,25 @@ export class AuthService {
         .do(this.storeToken)
   }
 
-  private storeToken(auth: Auth) {
+  private storeToken(auth: Auth): void {
     localStorage.setItem(AuthService.TOKEN_KEY, auth.token);
     localStorage.setItem(AuthService.EXPIRES_AT_KEY, auth.expiresAt);
   }
 
-  getToken() {
+  getToken(): string {
     return localStorage.getItem(AuthService.TOKEN_KEY);
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem(AuthService.TOKEN_KEY);
     localStorage.removeItem(AuthService.EXPIRES_AT_KEY);
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return moment().isBefore(this.getExpiration());
   }
 
-  getExpiration() {
+  getExpiration(): Moment {
     const expiresAt = localStorage.getItem(AuthService.EXPIRES_AT_KEY);
     return moment(expiresAt, 'x');
   }
