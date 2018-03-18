@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { AuthService } from "./auth.service";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from './auth.service';
 
 @Component({
-  selector: 'login',
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -26,24 +26,19 @@ export class LoginComponent {
     const password = val.password;
 
     if (username && password) {
-      console.log("clicked");
       this.authService.login(username, password)
         .subscribe(
           () => {
-            console.log("Successfully logged in");
+            console.log('Logged in.');
             // TODO: redirect
           },
           (err) => {
-            console.error(`Failed. ${err}`)
+            console.error(`Failed with error: ${JSON.stringify(err)}`);
           },
           () => {
-            console.log("Complete")
+            console.log('Complete');
           }
         );
-      console.log("kek")
-    } else {
-      console.log("Omgiki");
-      console.log(`${username} && ${password}`);
     }
   }
 }
