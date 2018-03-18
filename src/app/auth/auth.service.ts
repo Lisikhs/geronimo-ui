@@ -8,17 +8,23 @@ import 'rxjs/add/operator/do';
 @Injectable()
 export class AuthService {
 
-  // TODO: move to global configuration file (or whatever concept Angular has)
+  // TODO: inject values from global configuration (How Angular 2 proposes to do such things?)
   private static readonly TOKEN_KEY = 'token';
   private static readonly EXPIRES_AT_KEY = 'token_expires_at';
   private static readonly API_URL = 'http://localhost:8081';
   private static readonly AUTH_URL = `${AuthService.API_URL}/auth`;
+  private static readonly TOKEN_REFRESH_URL = `${AuthService.API_URL}/auth/refresh`;
 
   constructor(protected http: HttpClient) {}
 
   public login(username: string, password: string): Observable<Auth> {
     return this.http.post<Auth>(AuthService.AUTH_URL, {username, password})
       .do(this.storeToken);
+  }
+
+  public refreshToken(): Observable<Auth> {
+    return this.http.get<Auth>(AuthService.TOKEN_REFRESH_URL)
+        .do(this.storeToken)
   }
 
   private storeToken(auth: Auth) {
