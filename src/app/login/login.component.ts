@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -21,9 +21,8 @@ export class LoginComponent {
   }
 
   login() {
-    const val = this.form.value;
-    const username = val.username;
-    const password = val.password;
+    const username = this.form.value.username;
+    const password = this.form.value.password;
 
     if (username && password) {
       this.authService.login(username, password)
