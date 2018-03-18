@@ -17,12 +17,12 @@ export class AuthService {
 
   constructor(protected http: HttpClient) {}
 
-  public login(username: string, password: string): Observable<Auth> {
+  login(username: string, password: string): Observable<Auth> {
     return this.http.post<Auth>(AuthService.AUTH_URL, {username, password})
       .do(this.storeToken);
   }
 
-  public refreshToken(): Observable<Auth> {
+  refreshToken(): Observable<Auth> {
     return this.http.get<Auth>(AuthService.TOKEN_REFRESH_URL)
         .do(this.storeToken)
   }
