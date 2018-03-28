@@ -13,7 +13,7 @@ export class AuthService {
   private static readonly TOKEN_KEY = 'token';
   private static readonly EXPIRES_AT_KEY = 'token_expires_at';
 
-  private static readonly API_URL = 'http://localhost:8081';
+  private static readonly API_URL = 'http://localhost:8080';
   private static readonly AUTH_URL = `${AuthService.API_URL}/auth`;
   private static readonly TOKEN_REFRESH_URL = `${AuthService.API_URL}/auth/refresh`;
 
