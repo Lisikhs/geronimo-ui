@@ -9,6 +9,7 @@ import {AuthInterceptor} from './auth/auth.interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {HomeComponent} from './home/home.component';
 import {AppRoutingModule} from './app-routing.module';
+import {CommonsModule} from './commons/commons.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {AppRoutingModule} from './app-routing.module';
     FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    AuthModule
+    AuthModule,
+    CommonsModule
   ],
   providers: [
     {
