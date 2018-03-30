@@ -5,17 +5,13 @@ import * as moment from 'moment';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
+import {AppConfig} from '../common/app-config';
 
 @Injectable()
 export class AuthService {
 
-  // TODO: inject values from global configuration (How Angular 2 proposes to do such things?)
-  private static readonly TOKEN_KEY = 'token';
-  private static readonly EXPIRES_AT_KEY = 'token_expires_at';
-
-  private static readonly API_URL = 'http://localhost:8080';
-  private static readonly AUTH_URL = `${AuthService.API_URL}/auth`;
-  private static readonly TOKEN_REFRESH_URL = `${AuthService.API_URL}/auth/refresh`;
+  private static readonly AUTH_URL = `${AppConfig.API_URL}/auth`;
+  private static readonly TOKEN_REFRESH_URL = `${AppConfig.API_URL}/auth/refresh`;
 
   constructor(protected http: HttpClient) {}
 
@@ -30,17 +26,17 @@ export class AuthService {
   }
 
   private storeToken(auth: Auth): void {
-    localStorage.setItem(AuthService.TOKEN_KEY, auth.token);
-    localStorage.setItem(AuthService.EXPIRES_AT_KEY, auth.expiresAt);
+    localStorage.setItem(AppConfig.TOKEN_KEY, auth.token);
+    localStorage.setItem(AppConfig.EXPIRES_AT_KEY, auth.expiresAt);
   }
 
   getToken(): string {
-    return localStorage.getItem(AuthService.TOKEN_KEY);
+    return localStorage.getItem(AppConfig.TOKEN_KEY);
   }
 
   logout(): void {
-    localStorage.removeItem(AuthService.TOKEN_KEY);
-    localStorage.removeItem(AuthService.EXPIRES_AT_KEY);
+    localStorage.removeItem(AppConfig.TOKEN_KEY);
+    localStorage.removeItem(AppConfig.EXPIRES_AT_KEY);
   }
 
   isLoggedIn(): boolean {
@@ -48,7 +44,7 @@ export class AuthService {
   }
 
   getExpiration(): Moment {
-    const expiresAt = localStorage.getItem(AuthService.EXPIRES_AT_KEY);
+    const expiresAt = localStorage.getItem(AppConfig.EXPIRES_AT_KEY);
     return moment(expiresAt, 'x');
   }
 }

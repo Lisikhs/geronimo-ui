@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../auth/auth.service';
-import {UserService} from '../commons/user/user.service';
-import {Router} from '@angular/router';
+import {UserService} from '../common/user/user.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,8 @@ export class LoginComponent {
   constructor(private fb: FormBuilder,
               private authService: AuthService,
               private userService: UserService,
-              private router: Router) {
+              private router: Router,
+              private activeRoute: ActivatedRoute) {
 
     this.form = this.fb.group({
       username: ['', Validators.required],
@@ -34,7 +35,7 @@ export class LoginComponent {
         .subscribe(
           () => {
             console.log('Logged in.');
-            this.userService.current().subscribe(
+            this.userService.getCurrent().subscribe(
               user => {
                 localStorage.setItem('user', JSON.stringify(user));
               },
@@ -43,7 +44,13 @@ export class LoginComponent {
               }
             );
 
-            this.router.navigate(['/home']);
+            this.activeRoute.queryParams.subscribe((params) => {
+              if (params['returnUrl']) {
+                this.router.navigate([params['returnUrl']]);
+              } else {
+                this.router.navigate(['/home']);
+              }
+            });
           },
           (err) => {
             console.error(`Failed with error: ${JSON.stringify(err)}`);
