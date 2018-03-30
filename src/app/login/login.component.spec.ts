@@ -5,6 +5,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthModule} from '../auth/auth.module';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterTestingModule} from '@angular/router/testing';
+import {AuthService} from '../auth/auth.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -19,7 +20,7 @@ describe('LoginComponent', () => {
         ReactiveFormsModule,
         AuthModule,
         RouterTestingModule
-      ]
+      ],
     })
       .compileComponents();
   }));

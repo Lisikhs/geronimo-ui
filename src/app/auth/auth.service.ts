@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Moment } from 'moment';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import * as moment from 'moment';
+import {Moment} from 'moment';
 
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import {AppConfig} from '../common/app-config';
+import {Auth} from './auth';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,8 @@ export class AuthService {
   private static readonly AUTH_URL = `${AppConfig.API_URL}/auth`;
   private static readonly TOKEN_REFRESH_URL = `${AppConfig.API_URL}/auth/refresh`;
 
-  constructor(protected http: HttpClient) {}
+  constructor(protected http: HttpClient) {
+  }
 
   login(username: string, password: string): Observable<Auth> {
     return this.http.post<Auth>(AuthService.AUTH_URL, {username, password})
@@ -22,7 +24,7 @@ export class AuthService {
 
   refreshToken(): Observable<Auth> {
     return this.http.get<Auth>(AuthService.TOKEN_REFRESH_URL)
-        .do(this.storeToken);
+      .do(this.storeToken);
   }
 
   private storeToken(auth: Auth): void {
@@ -47,9 +49,4 @@ export class AuthService {
     const expiresAt = localStorage.getItem(AppConfig.EXPIRES_AT_KEY);
     return moment(expiresAt, 'x');
   }
-}
-
-class Auth {
-  token: string;
-  expiresAt: string;
 }

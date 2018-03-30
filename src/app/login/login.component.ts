@@ -3,12 +3,13 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../auth/auth.service';
 import {UserService} from '../common/user/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {LoginService} from './login.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [UserService]
+  providers: [UserService, LoginService]
 })
 export class LoginComponent {
 
@@ -18,7 +19,8 @@ export class LoginComponent {
               private authService: AuthService,
               private userService: UserService,
               private router: Router,
-              private activeRoute: ActivatedRoute) {
+              private activeRoute: ActivatedRoute,
+              private loginService: LoginService) {
 
     this.form = this.fb.group({
       username: ['', Validators.required],
@@ -31,34 +33,17 @@ export class LoginComponent {
     const password = this.form.value.password;
 
     if (username && password) {
-      this.authService.login(username, password)
-        .subscribe(
-          () => {
-            console.log('Logged in.');
-            this.userService.getCurrent().subscribe(
-              user => {
-                localStorage.setItem('user', JSON.stringify(user));
-              },
-              error => {
-                console.log(error);
-              }
-            );
-
-            this.activeRoute.queryParams.subscribe((params) => {
-              if (params['returnUrl']) {
-                this.router.navigate([params['returnUrl']]);
-              } else {
-                this.router.navigate(['/home']);
-              }
-            });
-          },
-          (err) => {
-            console.error(`Failed with error: ${JSON.stringify(err)}`);
-          },
-          () => {
-            console.log('Complete');
-          }
-        );
+      this.loginService.login(username, password).subscribe(
+        () => {
+          this.activeRoute.queryParams.subscribe((params) => {
+            if (params['returnUrl']) {
+              this.router.navigate([params['returnUrl']]);
+            } else {
+              this.router.navigate(['/home']);
+            }
+          });
+        }
+      );
     }
   }
 }
