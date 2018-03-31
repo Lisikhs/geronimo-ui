@@ -10,7 +10,8 @@
 /node_modules
 
 # IDEs and editors
-/.idea
+.idea
+*.iml
 .project
 .classpath
 .c9/
@@ -43,5 +44,4 @@ testem.log
 Thumbs.db
 
 # IDEA files
-*.iml
 /.idea
