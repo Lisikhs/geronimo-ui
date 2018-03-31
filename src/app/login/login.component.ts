@@ -39,7 +39,7 @@ export class LoginComponent {
             if (params['returnUrl']) {
               this.router.navigate([params['returnUrl']]);
             } else {
-              this.router.navigate(['/home']);
+              this.router.navigate(['/']);
             }
           });
         }
